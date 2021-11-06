@@ -29,7 +29,7 @@ Tapez dans le terminal la commande suivante:
 
 Une fois la construction de l'image du serveur Web et l'installation terminée, l'application devrait être en ligne à l'adresse http://localhost:8080
 
-Vous pouvez également accéder au PHPMyAdmin ici: http://localhost:8081
+Vous pouvez également accéder au PHPMyAdmin ici: http://localhost:8081 avec l'utilisateur `root` et comme mot de passe `rootdb_password`.
 
 Les performances à la première visite peuvent varier car le cache est en train d'être rempli dans le conteneur.
 
