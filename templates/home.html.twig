@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<section class="hero is-primary">
+  <div class="hero-body">
+    <p class="title">
+      Bienvenue sur Loc'art!
+    </p>
+    <p class="subtitle">
+      Vous pouvez retrouver ci-dessous notre catalogue de voitures à louer.
+    </p>
+  </div>
+</section>
+<div class="container mt-5">
+	<a href="{{path('homeOrdre', { 'ordre': ordre == 'asc' ? 'desc' : 'asc' })}}"><span class="tag is-info is-light">Prix {{ ordre == 'asc' ? 'croissant' : 'décroissant' }}</span></a><br /><br />
+    <div class="columns is-multiline">
+		{% for vehicule in vehicules %}
+
+			<div class="column is-one-quarter">
+				<div class="card">
+					<div class="card-image">
+						<figure class="image is-4by2">
+							<img src="{{ vehicule.image }}" alt="Placeholder image">
+						</figure>
+					</div>
+					<div class="card-content">
+						<div class="media">
+							<div class="media-content">
+								<p class="title is-4">{{ vehicule.modele }}</p>
+								<p class="subtitle is-6">{{vehicule.carac['marque']}}</p>
+							</div>
+						</div>
+
+						<div class="content">
+							<div style="display: block;" class="mb-3 mt-3">
+								<blockquote style="padding: 0.75em 1em">Prix<br />
+								<span style="font-size: 26px">{{vehicule.prix}}€</span> par jour</blockquote>
+							</div>
+							<a href="{{path('louerVoiture', {'id': vehicule.id}) }}" class="button is-primary">
+								Plus d'informations
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		{% endfor %}
+    </div>
+</div>
+{% endblock %}

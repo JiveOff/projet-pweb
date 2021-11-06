@@ -1,0 +1,97 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<section class="hero is-primary">
+  <div class="hero-body">
+    <p class="title">
+      Utilisateurs
+    </p>
+  </div>
+</section>
+<div class="container mt-5">
+    <div class="columns is-multiline">
+		{% for user in users %}
+			<div class="column is-one-quarter">
+				<div class="card">
+					<div x-data="{ modal{{ user.id }}: false }" class="card-content">
+						<div class="media">
+							<div class="media-content">
+								<p class="title is-4">{{ user.nom }}</p>
+								<p class="subtitle is-6">{{ user.email }}</p>
+							</div>
+						</div>
+						<button x-show="{{factures[user.id]|length > 0 ? 'true' : 'false'}}" class="button is-primary" @click="modal{{ user.id }} = true">Voir les locations</button>
+						<div class="modal" x-bind:class="modal{{ user.id }} ? 'is-active' : ''">
+                        	<div class="modal-background"></div>
+                            <div class="modal-content" style="width: fit-content; margin: 1rem;">
+								<div class="card mb-2" style="position: fixed">
+									<div class="card-content">
+										<p class="title">Factures trouvées: {{factures[user.id]|length}}</p>
+										<p class="subtitle">Scrollez pour voir toutes les factures.</p>
+									</div>
+								</div>
+								<div class="columns" style="margin-top: 113px">
+									{% for facture in factures[user.id] %}
+										<div class="column is-6">
+											<div class="card">
+												<div class="card-content">
+													<div class="media">
+														<div class="media-content">
+															<a href="{{ path('facture', {'idFacture': facture.id }) }}" class="button is-info is-light" style="float: right">
+																<i class="fas fa-file-invoice"></i>
+															</a>
+															<p class="title is-4">Facture N°{{ facture.id }}</p>
+														</div>
+													</div>
+													<div class="content">
+														<div class="media mb-0">
+															<figure class="media-left m-0 mr-3">
+																<p class="image is-64x64">
+																	<img src="{{ vehicules[facture.idVehic].image }}">
+																</p>
+															</figure>
+															<div class="media-content">
+																<p class="title is-5">{{ vehicules[facture.idVehic].carac["marque"] }}</p>
+																<p class="subtitle is-6">Modèle: <code>{{ vehicules[facture.idVehic].modele }}</code></p>
+															</div>
+														</div>
+														<span><i style="width: 24px" class="fas fa-cogs"></i> Boite de vitesse: <code>{{vehicules[facture.idVehic].carac['boite']}}</code></span><br />
+														<span><i style="width: 24px" class="fas fa-car-side"></i> Moteur: <code>{{vehicules[facture.idVehic].carac['moteur']}}</code></span><br />
+														<span><i style="width: 24px" class="fas fa-user"></i> Places: <code>{{vehicules[facture.idVehic].carac['nbPlaces']}}</code></span><br />
+														<span><i style="width: 24px" class="fas fa-door-open"></i> Portes: <code>{{vehicules[facture.idVehic].carac['nbPortes']}}</code></span><br />
+														<span><i style="width: 24px" class="fas fa-tint"></i> Couleur: <code>{{vehicules[facture.idVehic].carac['couleur']}}</code></span><br /><br />
+
+														<i style="width: 24px" class="fas fa-calendar"></i> Date de début: <code>{{facture.dateD|date('d/m/Y')}}</code><br />
+														<i style="width: 24px" class="fa fa-calendar"></i> Date de fin: <code>{{facture.dateF|date('d/m/Y')}}</code><br />
+															
+														<div style="display: block;" class="mt-3">
+															<blockquote style="padding: 0.75em 1em">Prix Location<br />
+															<span style="font-size: 26px">{{facture.montant}}€</span></blockquote>
+															{% if facture.payee == true %}<span class="tag is-success">Payée</span>{% else %}<span class="tag is-danger">Impayée</span>{% endif %}<br /><br />
+														</div>
+
+														{% if facture.payee == false %}
+															<a href="{{ path('paiementFacture', {'id': facture.id }) }}" class="button is-info">
+																Régulariser
+															</a>
+														{% endif %}
+
+														<a href="{{ path('annulerFacture', {'id': facture.id }) }}" class="button is-danger is-info">
+															<i class="fas fa-trash"></i>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+  							<button class="modal-close is-large" @click="modal{{ user.id }} = false" aria-label="close"></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+    </div>
+</div>
+{% endblock %}

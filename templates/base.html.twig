@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="HandheldFriendly" content="true" />
+        <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no" />
+        <title>{% block title %}Accueil{% endblock %} - Loc'art</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <script src="//unpkg.com/alpinejs" defer></script>
+        <script src="https://kit.fontawesome.com/2257ebf5f7.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="{{path('home')}}">
+                    <i class="fas fa-car"></i> <b><span class="ml-2">Loc'art</span></b>
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a href="{{path('home')}}" class="navbar-item">
+                        Catalogue
+                    </a>
+                </div>
+
+                <div class="navbar-end">
+
+                    {% if app.user %}
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">
+                                <i class="fas fa-user"></i> <span class="ml-2">{{ app.user.nom }}</span>
+                            </a>
+
+                            <div class="navbar-dropdown">
+                                <a href="{{path('compte')}}" class="navbar-item">
+                                    Vos locations
+                                </a>
+                            </div>
+                        </div>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="navbar-item has-dropdown is-hoverable">
+                                <a class="navbar-link">
+                                    <i class="fas fa-cog"></i> <span class="ml-2">Panel Admin</span>
+                                </a>
+
+                                <div class="navbar-dropdown">
+                                    <a href="{{path('admin_vehicule')}}" class="navbar-item">
+                                        Stocks disponibles
+                                    </a>
+                                    <a href="{{path('admin_locations')}}" class="navbar-item">
+                                        Voitures en location
+                                    </a>
+                                    <hr class="navbar-divider">
+                                    <a href="{{path('admin_ajouter')}}" class="navbar-item">
+                                        Ajouter un modèle
+                                    </a>
+                                    <hr class="navbar-divider">
+                                    <a href="{{path('admin_users')}}" class="navbar-item">
+                                        Liste des utilisateurs
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                <a href="{{path('app_logout')}}" class="button is-light">
+                                    Se déconnecter
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                <a href="{{path('inscription')}}" class="button is-primary">
+                                    <strong>S'inscrire</strong>
+                                </a>
+                                <a href="{{path('app_login')}}" class="button is-light">
+                                    Se connecter
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        <div id="main">
+        {% block body %}{% endblock %}
+        </div>
+        <footer class="footer mt-5">
+            <div class="content has-text-centered">
+                <p>
+                <strong>Loc'art</strong> est un service de location de véhicules réalisé pour le projet de PWEB de DUT Informatique 2ème année.<br />Réalisé par Antoine & Yannick du groupe 202.
+                </p>
+            </div>
+        </footer>
+
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', () => {
+
+                // Get all "navbar-burger" elements
+                const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+                // Check if there are any navbar burgers
+                if ($navbarBurgers.length > 0) {
+
+                    // Add a click event on each of them
+                    $navbarBurgers.forEach( el => {
+                        el.addEventListener('click', () => {
+
+                            // Get the target from the "data-target" attribute
+                            const target = el.dataset.target;
+                            const $target = document.getElementById(target);
+
+                            // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                            el.classList.toggle('is-active');
+                            $target.classList.toggle('is-active');
+
+                        });
+                    });
+                }
+
+            });
+        </script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

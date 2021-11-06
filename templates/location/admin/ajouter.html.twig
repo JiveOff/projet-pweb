@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout de voiture{% endblock %}
+
+{% block body %}
+<section class="hero is-primary">
+  <div class="hero-body">
+    <p class="title">
+      Ajout d'une voiture au stock
+    </p>
+  </div>
+</section>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column card is-7-tablet is-6-desktop is-5-widescreen">
+            <form action="" method="post" enctype="multipart/form-data">
+              {{ form_start(form) }}
+                <div class="message is-info">
+                    <div class="message-body">
+                        Séparez les caractéristiques par des virgules: marque, boîte, couleur, moteur, nbPlaces, nbPortes
+                    </div>
+                </div>
+                <div style="font-weight: 700; color: #363636">
+                    {{ form_row(form.modele, {'attr' : {'placeholder': 'Modèle', 'class': 'input'}}) }}
+                    {{ form_row(form.carac, {'attr' : {'placeholder': 'marque, boîte, couleur, moteur, nbPlaces, nbPortes', 'class': 'input'}}) }}
+                    {{ form_row(form.quantite, {'attr' : {'placeholder': 'Quantité', 'class': 'input'}}) }}
+                    {{ form_row(form.prix, {'attr' : {'placeholder': 'Prix par jour', 'class': 'input'}}) }}
+                    {{ form_row(form.image) }}
+                </div>
+                <button class="button is-primary mt-2" type="submit">
+                  Valider
+                </button>
+              {{ form_end(form) }}
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.form-group {
+    margin-bottom: .6rem;
+}
+</style>
+
+{% endblock %}

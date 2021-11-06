@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<section class="hero is-primary is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column card is-5-tablet is-4-desktop is-3-widescreen">
+          {% if app.user %}
+            <div class="message is-success">
+              <div class="message-body">
+                Connecté en tant que {{ app.user.name }}.
+              </div>
+            </div>
+          {% else %}
+            <form action="" method="post">
+              {{ form_start(form) }}
+                <div style="font-weight: 700; color: #363636">
+                  {{ form_row(form.nom, {'attr' : {'placeholder': 'Entreprise', 'class': 'input'}}) }}
+                  {{ form_row(form.email, {'attr' : {'placeholder': 'ex: admin@location.com', 'class': 'input mt-2'}}) }}
+                  {{ form_row(form.password, {'attr' : {'placeholder': '******', 'class': 'input mt-2'}}) }}
+                  {{ form_row(form.confirm_password, {'attr' : {'placeholder': '******', 'class': 'input mt-2'}}) }}
+                </div>
+                <button class="button is-primary mt-2" type="submit">
+                  S'inscrire
+                </button>
+              {{ form_end(form) }}
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.form-group {
+    margin-bottom: .6rem;
+}
+</style>
+
+{% endblock %}

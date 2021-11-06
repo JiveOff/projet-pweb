@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: db_web1
+    volumes:
+      - db-data:/var/lib/mysql
+      - "./app_db.sql:/docker-entrypoint-initdb.d/1.sql"
+    ports:
+      - "6603:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootdb_password
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_user_pass
+    networks:
+      - prod
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_web1
+    restart: always
+    depends_on:
+      - db
+    links:
+      - db:mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - 8081:80
+    environment:
+      - PMA_USERNAME=root
+      - PMA_USERNAME=rootdb_password
+    networks:
+      - prod
+
+  www:
+    build: php
+    container_name: www_web1
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    links:
+      - db:mysql
+    volumes:
+        - ./php/vhosts:/etc/apache2/sites-enabled
+        - ./:/var/www/project
+    environment:
+      DATABASE_URL: mysql://root:rootdb_password@mysql:3306/app_db
+    restart: always
+    networks:
+      - prod
+
+networks:
+  prod:
+ 
+volumes:
+  db-data:

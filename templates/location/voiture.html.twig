@@ -1,0 +1,130 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<section class="hero is-primary">
+  <div class="hero-body">
+    <p class="subtitle">
+      {{vehicule.carac['marque']}}
+    </p>
+    <p class="title">
+      {{vehicule.modele}}
+    </p>
+  </div>
+</section>
+<div class="container mt-5">
+    {% if message %}
+        <div class="message is-danger">
+            <div class="message-body">
+                {{ message }}
+            </div>
+        </div>
+    {% endif %}
+    <div class="columns">
+        <div class="column is-8">
+            <div class="card">
+                <div class="card-image">
+					<figure class="image is-4by2">
+						<img src="{{ vehicule.image }}" alt="Image voiture">
+					</figure>
+				</div>
+            </div>
+        </div>
+        <div class="column is-4">
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+						<div class="media-content">
+							<p class="title is-3">{{ vehicule.modele }}</p>
+							<p class="subtitle is-6">{{vehicule.carac['marque']}}</p>
+						</div>
+					</div>
+
+					<div x-data="{ modalOpen: false }" class="content">
+						<span><i style="width: 24px" class="fas fa-cogs"></i> Boite de vitesse: <code>{{vehicule.carac['boite']}}</code></span><br />
+						<span><i style="width: 24px" class="fas fa-car-side"></i> Moteur: <code>{{vehicule.carac['moteur']}}</code></span><br />
+						<span><i style="width: 24px" class="fas fa-user"></i> Places: <code>{{vehicule.carac['nbPlaces']}}</code></span><br />
+						<span><i style="width: 24px" class="fas fa-door-open"></i> Portes: <code>{{vehicule.carac['nbPortes']}}</code></span><br />
+						<span><i style="width: 24px" class="fas fa-tint"></i> Couleur: <code>{{vehicule.carac['couleur']}}</code></span><br /><br />
+
+						<div style="display: block;" class="mb-3 mt-3">
+							<blockquote style="padding: 0.75em 1em">Prix<br />
+							<span style="font-size: 26px">{{vehicule.prix}}€</span> par jour</blockquote>
+						</div>
+
+                        {% if app.user %}
+
+                            <button class="button is-primary" @click="modalOpen = true">Louer</button>
+
+                            <div class="modal" x-bind:class="modalOpen ? 'is-active' : ''">
+                                <div class="modal-background"></div>
+                                <div class="modal-content">
+                                    <div class="card">
+                                        <div x-data="{ dateD: '', dateF: '' }" class="card-content">
+                                            <h3>Votre location</h3>
+                                            <div class="media mb-0">
+                                                <figure class="media-left m-0 mr-3">
+                                                    <p class="image is-64x64">
+                                                        <img src="{{ vehicule.image }}">
+                                                    </p>
+                                                </figure>
+                                                <div class="media-content">
+                                                    <p class="title is-5">{{ vehicule.carac["marque"] }}</p>
+                                                    <p class="subtitle is-6">{{ vehicule.modele }}</p>
+                                                </div>
+                                            </div>
+                                            <div style="display: block;" class="mb-3 mt-3">
+                                                <blockquote style="padding: 0.75em 1em">Prix<br />
+                                                <span style="font-size: 26px"><span x-ref="prix">{{vehicule.prix}}</span>€</span> par jour</blockquote>
+                                            </div>
+                                            <hr>
+
+                                            <form method="POST" action="{{ path('creationFacture') }}" name="dates">
+                                                <h4>Date de la location</h4>
+                                                <div class="field has-addons">
+                                                    <div class="control is-expanded">
+                                                        <input type="date" class="input mb-2" name="dateDebut" x-model="dateD" placeholder="DD/MM/YYYY">
+                                                    </div>
+                                                    <div class="control is-expanded">
+                                                        <input type="date" class="input" name="dateFin" x-model="dateF" placeholder="DD/MM/YYYY">
+                                                    </div>
+                                                </div>
+
+                                                <input style="display: none;" value="{{vehicule.prix}}" name="prix">
+                                                <input style="display: none;" value="{{vehicule.id}}" name="id">
+                                                <template x-if="dateD !== '' && dateF !== '' && new Date(dateD) > new Date() && new Date(dateF) > new Date(dateD)">
+                                                    <div style="display: block;" class="mb-3 mt-3">
+                                                        <blockquote style="padding: 0.75em 1em">Prix total<br />
+                                                        <span style="font-size: 26px"><span x-text="{{vehicule.prix}} * Math.ceil(Math.abs(new Date(dateD) - new Date(dateF)) / (1000 * 60 * 60 * 24))"></span>€</span> pour <span x-text="Math.ceil(Math.abs(new Date(dateD) - new Date(dateF)) / (1000 * 60 * 60 * 24))"></span> jours</blockquote>
+                                                        <button class="button is-primary">Valider la location</button>
+                                                    </div>
+                                                </template>
+                                                <template x-if="new Date(dateD) < new Date() && new Date(dateF) > new Date(dateD)">
+                                                    <div class="message is-danger">
+                                                        <div class="message-body">
+                                                            La date de début ne peut pas être dans le passé.
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="modal-close is-large" @click="modalOpen = false" aria-label="close"></button>
+                            </div>
+
+                        {% else %}
+
+                            <div class="message is-danger">
+                                <div class="message-body">
+                                    Vous devez être connecté pour louer.
+                                </div>
+                            </div>
+
+                        {% endif %}
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
