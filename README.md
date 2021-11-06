@@ -15,15 +15,17 @@ L'avantage avec Docker est que vous n'avez pas besoin de configurer quoi que ce 
 
 Vous pouvez suivre un tutoriel d'installation ici: https://codedesign.fr/docker-desktop-windows-debutant/
 
-Pendant l'installation de Docker, vous pouvez télécharger les dépendances via Composer, pour cela, ouvrez un terminal dans le dossier du projet et saisissez la commande:
+Pendant l'installation de Docker, vous pouvez télécharger les dépendances via Composer, pour cela, assurez vous que vous avez PHP 7.4 et Composer installé sur votre système.
 
-``composer install``
+Ouvrez un terminal dans le dossier du projet et saisissez la commande:
+
+`composer install`
 
 **Une fois Docker installé:**
 
 Tapez dans le terminal la commande suivante:
 
-``docker-compose up -d``
+`docker-compose up -d`
 
 Une fois la construction de l'image du serveur Web et l'installation terminée, l'application devrait être en ligne à l'adresse http://localhost:8080
 
@@ -37,21 +39,21 @@ Ouvrez un terminal dans le dossier du projet.
 
 Installez les dépendances via Composer en tapant dans le terminal:
 
-``composer install``
+`composer install`
 
 Vérifiez que vous avez la bonne version de PHP (7.4) en tapant:
 
-``php -v``
+`php -v`
 
 Modifiez la ligne 35 du **.env** pour y inclure la configuration de votre base de données:
 
-``DATABASE_URL=mysql://UTILISATEUR:MOTDEPASSE@HOTE:PORT/BASE_DE_DONNEE``
+`DATABASE_URL=mysql://UTILISATEUR:MOTDEPASSE@HOTE:PORT/BASE_DE_DONNEE`
 
 Importez le fichier **app_db.sql** dans votre base de donnée MySQL.
 
 Démarrez le serveur Symfony:
 
-``symfony server:start``
+`symfony server:start`
 
 ### Identifiants
 
