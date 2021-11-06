@@ -25,7 +25,9 @@ Tapez dans le terminal la commande suivante:
 
 ``docker-compose up -d``
 
-Une fois la construction de l'image du serveur Web et l'installation terminée, l'application devrait être en ligne à l'adresse **localhost:8080**.
+Une fois la construction de l'image du serveur Web et l'installation terminée, l'application devrait être en ligne à l'adresse http://localhost:8080
+
+Vous pouvez également accéder au PHPMyAdmin ici: http://localhost:8081
 
 Les performances à la première visite peuvent varier car le cache est en train d'être rempli dans le conteneur.
 
